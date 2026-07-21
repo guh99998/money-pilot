@@ -1,0 +1,9 @@
+CREATE TABLE endereco (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    rua VARCHAR(100) NOT NULL,
+    numero VARCHAR(5) NOT NULL,
+    bairro VARCHAR(100) NOT NULL,
+    cep VARCHAR(8) NOT NULL,
+    cidade VARCHAR(50) NOT NULL,
+    uf CHAR(2) NOT NULL
+);

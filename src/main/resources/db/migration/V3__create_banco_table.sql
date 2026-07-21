@@ -1,0 +1,5 @@
+CREATE TABLE banco (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    codigo_banco VARCHAR(10) NOT NULL,
+    nome_banco VARCHAR(100) NOT NULL
+);

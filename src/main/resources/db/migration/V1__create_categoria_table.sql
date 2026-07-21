@@ -1,0 +1,6 @@
+CREATE TABLE categoria (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    tag_cor VARCHAR(255) NOT NULL,
+    tipo_categoria VARCHAR(20) NOT NULL
+);
