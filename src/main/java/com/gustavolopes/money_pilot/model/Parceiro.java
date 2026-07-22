@@ -15,16 +15,15 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Parceiro {
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "tipo_documento")
+public abstract class Parceiro {
   @Id
   @GeneratedValue(strategy =  GenerationType.IDENTITY)
   private Long id;
 
   @NotBlank
   private String nome;
-
-  @NotNull
-  private String documento;
 
   @NotNull
   private String telefone;
