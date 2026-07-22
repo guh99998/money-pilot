@@ -1,4 +1,4 @@
-package com.gustavolopes.money_pilot;
+package com.gustavolopes.money_pilot.controller;
 
 import com.gustavolopes.money_pilot.dto.CategoriaRequestDTO;
 import com.gustavolopes.money_pilot.dto.CategoriaResponseDTO;
