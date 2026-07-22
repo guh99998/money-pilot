@@ -32,9 +32,10 @@ public class Parceiro {
   @NotNull
   private String email;
 
-  @NotNull
-  @Enumerated(EnumType.STRING)
   @ElementCollection
+  @Enumerated(EnumType.STRING)
+  @CollectionTable(name = "parceiro_tipo_parceiro", joinColumns = @JoinColumn(name = "parceiro_id"))
+  @Column(name = "tipo_parceiro")
   private Set<TipoParceiro> tipoParceiros = new HashSet<>();
 
   @NotNull
