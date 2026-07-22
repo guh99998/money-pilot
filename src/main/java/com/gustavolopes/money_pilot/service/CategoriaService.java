@@ -2,6 +2,7 @@ package com.gustavolopes.money_pilot.service;
 
 import com.gustavolopes.money_pilot.dto.CategoriaRequestDTO;
 import com.gustavolopes.money_pilot.dto.CategoriaResponseDTO;
+import com.gustavolopes.money_pilot.exception.CategoriaNotFoundException;
 import com.gustavolopes.money_pilot.model.Categoria;
 import com.gustavolopes.money_pilot.repository.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class CategoriaService {
 
     public CategoriaResponseDTO getCategoriaById(Long id) {
         Optional<Categoria> categoria = repository.findById(id);
+
+        if (categoria.isEmpty())
+            throw new CategoriaNotFoundException(id);
 
         return new CategoriaResponseDTO(categoria.get());
     }
