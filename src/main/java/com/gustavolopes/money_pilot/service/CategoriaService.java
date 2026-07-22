@@ -2,15 +2,16 @@ package com.gustavolopes.money_pilot.service;
 
 import com.gustavolopes.money_pilot.dto.CategoriaRequestDTO;
 import com.gustavolopes.money_pilot.dto.CategoriaResponseDTO;
+import com.gustavolopes.money_pilot.exception.CategoriaEmUsoException;
 import com.gustavolopes.money_pilot.exception.CategoriaNotFoundException;
 import com.gustavolopes.money_pilot.model.Categoria;
 import com.gustavolopes.money_pilot.repository.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 public class CategoriaService {
@@ -21,13 +22,13 @@ public class CategoriaService {
         return repository.findAll(pagination).map(CategoriaResponseDTO::new);
     }
 
+    private Categoria buscarCategoriaOuLancarExcecao(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new CategoriaNotFoundException(id));
+    }
+
     public CategoriaResponseDTO getCategoriaById(Long id) {
-        Optional<Categoria> categoria = repository.findById(id);
-
-        if (categoria.isEmpty())
-            throw new CategoriaNotFoundException(id);
-
-        return new CategoriaResponseDTO(categoria.get());
+        return new CategoriaResponseDTO(buscarCategoriaOuLancarExcecao(id));
     }
 
     public CategoriaResponseDTO createCategoria(CategoriaRequestDTO categoriaRequestDTO) {
@@ -43,28 +44,23 @@ public class CategoriaService {
     }
 
     public void deleteCategoria(Long id) {
-        CategoriaResponseDTO categoriaResponseDTO = this.getCategoriaById(id);
-        Categoria categoria = new Categoria();
-
-        categoria.setId(categoriaResponseDTO.id());
-        categoria.setNome(categoriaResponseDTO.nome());
-        categoria.setTagCor(categoriaResponseDTO.tagCor());
-        categoria.setTipoCategoria(categoriaResponseDTO.tipoCategoria());
-
-        repository.delete(categoria);
+        Categoria categoria = buscarCategoriaOuLancarExcecao(id);
+        try {
+            repository.delete(categoria);
+        } catch (DataIntegrityViolationException e) {
+            throw new CategoriaEmUsoException(id);
+        }
     }
 
     public CategoriaResponseDTO updateCategoria(Long id, CategoriaRequestDTO categoriaRequestDTO) {
-        this.getCategoriaById(id);
+        Categoria categoria = buscarCategoriaOuLancarExcecao(id);
 
-        Categoria categoria = new Categoria();
-        categoria.setId(id);
         categoria.setNome(categoriaRequestDTO.nome());
         categoria.setTagCor(categoriaRequestDTO.tagCor());
         categoria.setTipoCategoria(categoriaRequestDTO.tipoCategoria());
 
         Categoria categoriaSalva = repository.save(categoria);
-
         return new CategoriaResponseDTO(categoriaSalva);
     }
+
 }
