@@ -22,7 +22,7 @@ public class CategoriaService {
         return repository.findAll(pagination).map(CategoriaResponseDTO::new);
     }
 
-    private Categoria buscarCategoriaOuLancarExcecao(Long id) {
+    public Categoria buscarCategoriaOuLancarExcecao(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new CategoriaNotFoundException(id));
     }

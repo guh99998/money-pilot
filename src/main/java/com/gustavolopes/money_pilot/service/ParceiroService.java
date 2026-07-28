@@ -57,7 +57,7 @@ public class ParceiroService {
             return repository.findAll(pagination).map(ParceiroResponseDTO::new);
         }
 
-        private Parceiro buscarParceiroOuLancarExcecao(Long id) {
+        public Parceiro buscarParceiroOuLancarExcecao(Long id) {
             return repository.findById(id).orElseThrow(() -> new ParceiroNotFoundException(id));
         }
 
