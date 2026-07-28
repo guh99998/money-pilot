@@ -25,10 +25,8 @@ public abstract class Parceiro {
   @NotBlank
   private String nome;
 
-  @NotNull
   private String telefone;
 
-  @NotNull
   private String email;
 
   @ElementCollection

@@ -1,0 +1,2 @@
+ALTER TABLE parceiro MODIFY telefone VARCHAR(11) NULL;
+ALTER TABLE parceiro MODIFY email VARCHAR(100) NULL;
