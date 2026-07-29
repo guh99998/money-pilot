@@ -10,7 +10,7 @@
 
 ## 📌 Status
 
-Projeto em desenvolvimento. Hoje o CRUD completo (controller, service, DTOs, exceptions e testes) está implementado para os recursos **Categoria**, **Parceiro** (pessoa física e jurídica), **Receita**, **Despesa** e **Banco**. As demais entidades do domínio (ContaBancaria, Endereco, Pagamento, Recebimento) já existem como models e possuem migrations e repositories, mas ainda não têm service/controller expostos.
+Projeto em desenvolvimento. Hoje o CRUD completo (controller, service, DTOs, exceptions e testes) está implementado para os recursos **Categoria**, **Parceiro** (pessoa física e jurídica), **Receita**, **Despesa**, **Banco** e **Conta Bancária**. As demais entidades do domínio (Endereco, Pagamento, Recebimento) já existem como models e possuem migrations e repositories, mas ainda não têm service/controller expostos.
 
 ## 🚀 Começando
 
@@ -99,18 +99,30 @@ A API sobe em `http://localhost:8080`.
 
 > O código do banco (`codigoBanco`) é imutável após a criação — hoje é informado manualmente, mas a ideia é que futuramente venha de uma consulta à tabela FEBRABAN, preenchendo código e nome automaticamente.
 
+### Conta Bancária
+
+| Método | Rota                    | Descrição                            |
+|--------|-------------------------|----------------------------------------|
+| GET    | `/contasbancarias`      | Lista contas bancárias (paginado)      |
+| GET    | `/contasbancarias/{id}` | Busca uma conta bancária por id        |
+| POST   | `/contasbancarias`      | Cria uma nova conta bancária           |
+| PUT    | `/contasbancarias/{id}` | Atualiza uma conta bancária existente  |
+| DELETE | `/contasbancarias/{id}` | Remove uma conta bancária              |
+
+> Toda conta bancária pertence a um `Banco` (`bancoId`). Ao remover um banco ou uma conta bancária que já esteja associada a receitas/despesas, a API retorna `409 Conflict`.
+
 ## ⚙️ Executando os testes
 
 ```
 ./mvnw test
 ```
 
-A suíte cobre os recursos Categoria, Parceiro, Receita, Despesa e Banco em diferentes camadas:
+A suíte cobre os recursos Categoria, Parceiro, Receita, Despesa, Banco e Conta Bancária em diferentes camadas:
 
-* **Service** (`CategoriaServiceTest`, `ParceiroServiceTest`, `ReceitaServiceTest`, `DespesaServiceTest`, `BancoServiceTest`) — regras de negócio com o repository mockado (Mockito)
-* **Controller** (`CategoriaControllerTest`, `ParceiroControllerTest`, `ReceitaControllerTest`, `DespesaControllerTest`, `BancoControllerTest`) — fatia web (`@WebMvcTest` + MockMvc), validando status HTTP e corpo de resposta
-* **DTO** (`CategoriaRequestDTOTest`, `ParceiroRequestDTOTest`, `ReceitaRequestDTOTest`, `DespesaRequestDTOTest`, `BancoRequestDTOTest`) — validação de Bean Validation (campos obrigatórios, formatos e regras de negócio)
-* **Model** (`ReceitaTest`, `DespesaTest`, `BancoTest`) — validação de Bean Validation ao nível de entidade, `equals`/`hashCode` e `toString`
+* **Service** (`CategoriaServiceTest`, `ParceiroServiceTest`, `ReceitaServiceTest`, `DespesaServiceTest`, `BancoServiceTest`, `ContaBancariaServiceTest`) — regras de negócio com o repository mockado (Mockito)
+* **Controller** (`CategoriaControllerTest`, `ParceiroControllerTest`, `ReceitaControllerTest`, `DespesaControllerTest`, `BancoControllerTest`, `ContaBancariaControllerTest`) — fatia web (`@WebMvcTest` + MockMvc), validando status HTTP e corpo de resposta
+* **DTO** (`CategoriaRequestDTOTest`, `ParceiroRequestDTOTest`, `ReceitaRequestDTOTest`, `DespesaRequestDTOTest`, `BancoRequestDTOTest`, `ContaBancariaRequestDTOTest`) — validação de Bean Validation (campos obrigatórios, formatos e regras de negócio)
+* **Model** (`ReceitaTest`, `DespesaTest`, `BancoTest`, `ContaBancariaTest`) — validação de Bean Validation ao nível de entidade, `equals`/`hashCode` e `toString`
 * **Exception Handler** (`ApiExceptionHandlerTest`) — mapeamento de exceções para as respostas de erro padronizadas
 
 ## 🛠️ Construído com
