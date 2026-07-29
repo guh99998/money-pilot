@@ -108,4 +108,16 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErroRespostaDTO(LocalDateTime.now(), 400, ex.getMessage(), null));
     }
+
+    @ExceptionHandler(ContaBancariaNotFoundException.class)
+    public ResponseEntity<ErroRespostaDTO> handleContaBancariaNotFound(ContaBancariaNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErroRespostaDTO(LocalDateTime.now(), 404, ex.getMessage(), null));
+    }
+
+    @ExceptionHandler(ContaBancariaEmUsoException.class)
+    public ResponseEntity<ErroRespostaDTO> handleContaBancariaEmUso(ContaBancariaEmUsoException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErroRespostaDTO(LocalDateTime.now(), 409, ex.getMessage(), null));
+    }
 }
