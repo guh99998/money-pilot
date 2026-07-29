@@ -84,4 +84,10 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ErroRespostaDTO(LocalDateTime.now(), 404, ex.getMessage(), null));
     }
+
+    @ExceptionHandler(DespesaNotFoundException.class)
+    public ResponseEntity<ErroRespostaDTO> handleDespesaNotFound(DespesaNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErroRespostaDTO(LocalDateTime.now(), 404, ex.getMessage(), null));
+    }
 }
