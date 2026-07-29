@@ -35,7 +35,7 @@ public class Despesa {
     private int numeroParcelas;
 
     @NotNull
-    private BigDecimal valorParcelas;
+    private BigDecimal valorParcela;
 
     @ManyToOne
     @JoinColumn(name = "categoria_id")
