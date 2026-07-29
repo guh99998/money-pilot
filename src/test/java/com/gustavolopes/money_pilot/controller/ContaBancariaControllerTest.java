@@ -54,7 +54,7 @@ public class ContaBancariaControllerTest {
     }
 
     private ContaBancariaResponseDTO responseDTO(Long id) {
-        return new ContaBancariaResponseDTO(id, banco(), "Conta Corrente", "0001", "123456-7", BigDecimal.valueOf(1000));
+        return new ContaBancariaResponseDTO(id, banco(), "Conta Corrente", "0001", "123456-7", BigDecimal.valueOf(1000), BigDecimal.valueOf(1000));
     }
 
     @Test

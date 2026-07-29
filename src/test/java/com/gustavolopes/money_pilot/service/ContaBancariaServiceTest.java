@@ -59,6 +59,7 @@ public class ContaBancariaServiceTest {
         contaBancaria.setAgencia("0001");
         contaBancaria.setNumeroConta("123456-7");
         contaBancaria.setSaldoInicial(BigDecimal.valueOf(1000));
+        contaBancaria.setSaldoAtual(BigDecimal.valueOf(1000));
         return contaBancaria;
     }
 
@@ -123,6 +124,7 @@ public class ContaBancariaServiceTest {
         verify(repository).save(captor.capture());
         assertThat(captor.getValue().getBanco()).isEqualTo(banco);
         assertThat(captor.getValue().getSaldoInicial()).isEqualByComparingTo(BigDecimal.valueOf(1000));
+        assertThat(captor.getValue().getSaldoAtual()).isEqualByComparingTo(BigDecimal.valueOf(1000));
     }
 
     @Test
@@ -209,5 +211,29 @@ public class ContaBancariaServiceTest {
 
         assertThatThrownBy(() -> contaBancariaService.deleteContaBancaria(1L))
                 .isInstanceOf(ContaBancariaEmUsoException.class);
+    }
+
+    @Test
+    public void deveCreditarSaldoDaContaBancaria() {
+        Banco banco = criarBanco(1L);
+        ContaBancaria contaBancaria = criarContaBancaria(1L, banco);
+        contaBancaria.setSaldoAtual(BigDecimal.valueOf(1000));
+
+        contaBancariaService.creditarSaldo(contaBancaria, BigDecimal.valueOf(500));
+
+        assertThat(contaBancaria.getSaldoAtual()).isEqualByComparingTo(BigDecimal.valueOf(1500));
+        verify(repository).save(contaBancaria);
+    }
+
+    @Test
+    public void deveDebitarSaldoDaContaBancaria() {
+        Banco banco = criarBanco(1L);
+        ContaBancaria contaBancaria = criarContaBancaria(1L, banco);
+        contaBancaria.setSaldoAtual(BigDecimal.valueOf(1000));
+
+        contaBancariaService.debitarSaldo(contaBancaria, BigDecimal.valueOf(300));
+
+        assertThat(contaBancaria.getSaldoAtual()).isEqualByComparingTo(BigDecimal.valueOf(700));
+        verify(repository).save(contaBancaria);
     }
 }

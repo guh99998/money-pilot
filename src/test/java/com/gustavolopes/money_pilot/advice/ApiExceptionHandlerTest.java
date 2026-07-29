@@ -7,6 +7,10 @@ import com.gustavolopes.money_pilot.exception.DocumentoImutavelException;
 import com.gustavolopes.money_pilot.exception.DocumentoInvalidoException;
 import com.gustavolopes.money_pilot.exception.ParceiroEmUsoException;
 import com.gustavolopes.money_pilot.exception.ParceiroNotFoundException;
+import com.gustavolopes.money_pilot.exception.RecebimentoNaoConfirmadoException;
+import com.gustavolopes.money_pilot.exception.RecebimentoNaoEstornadoException;
+import com.gustavolopes.money_pilot.exception.RecebimentoNotFoundException;
+import com.gustavolopes.money_pilot.exception.ReceitaNaoEncontradaNaListaException;
 import com.gustavolopes.money_pilot.model.TipoDocumento;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
@@ -131,5 +135,49 @@ public class ApiExceptionHandlerTest {
         assertThat(resposta.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
         assertThat(resposta.getBody().status()).isEqualTo(409);
         assertThat(resposta.getBody().mensagem()).contains("integridade");
+    }
+
+    @Test
+    public void deveMapearRecebimentoNotFoundExceptionPara404() {
+        RecebimentoNotFoundException ex = new RecebimentoNotFoundException(999L);
+
+        ResponseEntity<ErroRespostaDTO> resposta = handler.handleRecebimentoNotFound(ex);
+
+        assertThat(resposta.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(resposta.getBody().status()).isEqualTo(404);
+        assertThat(resposta.getBody().mensagem()).isEqualTo("O Recebimento 999 não foi encontrado");
+    }
+
+    @Test
+    public void deveMapearReceitaNaoEncontradaNaListaExceptionPara404() {
+        ReceitaNaoEncontradaNaListaException ex = new ReceitaNaoEncontradaNaListaException();
+
+        ResponseEntity<ErroRespostaDTO> resposta = handler.handleReceitaNaoEncontradaNaLista(ex);
+
+        assertThat(resposta.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(resposta.getBody().status()).isEqualTo(404);
+        assertThat(resposta.getBody().mensagem()).contains("não foi encontrada");
+    }
+
+    @Test
+    public void deveMapearRecebimentoNaoConfirmadoExceptionPara409() {
+        RecebimentoNaoConfirmadoException ex = new RecebimentoNaoConfirmadoException(1L);
+
+        ResponseEntity<ErroRespostaDTO> resposta = handler.handleRecebimentoNaoConfirmado(ex);
+
+        assertThat(resposta.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+        assertThat(resposta.getBody().status()).isEqualTo(409);
+        assertThat(resposta.getBody().mensagem()).contains("não está confirmado");
+    }
+
+    @Test
+    public void deveMapearRecebimentoNaoEstornadoExceptionPara409() {
+        RecebimentoNaoEstornadoException ex = new RecebimentoNaoEstornadoException(1L);
+
+        ResponseEntity<ErroRespostaDTO> resposta = handler.handleRecebimentoNaoEstornado(ex);
+
+        assertThat(resposta.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+        assertThat(resposta.getBody().status()).isEqualTo(409);
+        assertThat(resposta.getBody().mensagem()).contains("estornado");
     }
 }

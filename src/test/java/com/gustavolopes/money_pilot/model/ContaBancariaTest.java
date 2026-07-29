@@ -44,6 +44,7 @@ public class ContaBancariaTest {
         contaBancaria.setAgencia("0001");
         contaBancaria.setNumeroConta("123456-7");
         contaBancaria.setSaldoInicial(BigDecimal.valueOf(1000));
+        contaBancaria.setSaldoAtual(BigDecimal.valueOf(1000));
         return contaBancaria;
     }
 
@@ -102,6 +103,18 @@ public class ContaBancariaTest {
         assertThat(violacoes)
                 .extracting(violacao -> violacao.getPropertyPath().toString())
                 .contains("saldoInicial");
+    }
+
+    @Test
+    public void deveGerarViolacaoQuandoSaldoAtualEhNulo() {
+        ContaBancaria contaBancaria = criarContaBancariaValida();
+        contaBancaria.setSaldoAtual(null);
+
+        Set<ConstraintViolation<ContaBancaria>> violacoes = validator.validate(contaBancaria);
+
+        assertThat(violacoes)
+                .extracting(violacao -> violacao.getPropertyPath().toString())
+                .contains("saldoAtual");
     }
 
     @Test

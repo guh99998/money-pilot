@@ -35,4 +35,7 @@ public class ContaBancaria {
 
     @NotNull
     private BigDecimal saldoInicial;
+
+    @NotNull
+    private BigDecimal saldoAtual;
 }

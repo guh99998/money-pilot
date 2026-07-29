@@ -120,4 +120,28 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(new ErroRespostaDTO(LocalDateTime.now(), 409, ex.getMessage(), null));
     }
+
+    @ExceptionHandler(RecebimentoNotFoundException.class)
+    public ResponseEntity<ErroRespostaDTO> handleRecebimentoNotFound(RecebimentoNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErroRespostaDTO(LocalDateTime.now(), 404, ex.getMessage(), null));
+    }
+
+    @ExceptionHandler(ReceitaNaoEncontradaNaListaException.class)
+    public ResponseEntity<ErroRespostaDTO> handleReceitaNaoEncontradaNaLista(ReceitaNaoEncontradaNaListaException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErroRespostaDTO(LocalDateTime.now(), 404, ex.getMessage(), null));
+    }
+
+    @ExceptionHandler(RecebimentoNaoConfirmadoException.class)
+    public ResponseEntity<ErroRespostaDTO> handleRecebimentoNaoConfirmado(RecebimentoNaoConfirmadoException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErroRespostaDTO(LocalDateTime.now(), 409, ex.getMessage(), null));
+    }
+
+    @ExceptionHandler(RecebimentoNaoEstornadoException.class)
+    public ResponseEntity<ErroRespostaDTO> handleRecebimentoNaoEstornado(RecebimentoNaoEstornadoException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErroRespostaDTO(LocalDateTime.now(), 409, ex.getMessage(), null));
+    }
 }

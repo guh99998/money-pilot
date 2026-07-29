@@ -10,7 +10,8 @@ public record ContaBancariaResponseDTO(
         String nomeContaBancaria,
         String agencia,
         String numeroConta,
-        BigDecimal saldoInicial
+        BigDecimal saldoInicial,
+        BigDecimal saldoAtual
 ) {
     public ContaBancariaResponseDTO(ContaBancaria contaBancaria) {
         this(
@@ -19,7 +20,8 @@ public record ContaBancariaResponseDTO(
                 contaBancaria.getNomeContaBancaria(),
                 contaBancaria.getAgencia(),
                 contaBancaria.getNumeroConta(),
-                contaBancaria.getSaldoInicial()
+                contaBancaria.getSaldoInicial(),
+                contaBancaria.getSaldoAtual()
         );
     }
 }

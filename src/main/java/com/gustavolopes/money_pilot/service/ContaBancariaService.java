@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 public class ContaBancariaService {
     @Autowired
@@ -41,9 +43,20 @@ public class ContaBancariaService {
         contaBancaria.setAgencia(dto.agencia());
         contaBancaria.setNumeroConta(dto.numeroConta());
         contaBancaria.setSaldoInicial(dto.saldoInicial());
+        contaBancaria.setSaldoAtual(dto.saldoInicial());
 
         ContaBancaria salva = repository.save(contaBancaria);
         return new ContaBancariaResponseDTO(salva);
+    }
+
+    public void creditarSaldo(ContaBancaria contaBancaria, BigDecimal valor) {
+        contaBancaria.setSaldoAtual(contaBancaria.getSaldoAtual().add(valor));
+        repository.save(contaBancaria);
+    }
+
+    public void debitarSaldo(ContaBancaria contaBancaria, BigDecimal valor) {
+        contaBancaria.setSaldoAtual(contaBancaria.getSaldoAtual().subtract(valor));
+        repository.save(contaBancaria);
     }
 
     public void deleteContaBancaria(Long id) {

@@ -35,4 +35,8 @@ public class Recebimento {
     @ManyToOne
     @JoinColumn(name = "conta_bancaria_id")
     private ContaBancaria contaBancaria;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private StatusRecebimento status;
 }
