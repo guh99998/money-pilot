@@ -90,4 +90,22 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ErroRespostaDTO(LocalDateTime.now(), 404, ex.getMessage(), null));
     }
+
+    @ExceptionHandler(BancoNotFoundException.class)
+    public ResponseEntity<ErroRespostaDTO> handleBancoNotFound(BancoNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErroRespostaDTO(LocalDateTime.now(), 404, ex.getMessage(), null));
+    }
+
+    @ExceptionHandler(BancoEmUsoException.class)
+    public ResponseEntity<ErroRespostaDTO> handleBancoEmUso(BancoEmUsoException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErroRespostaDTO(LocalDateTime.now(), 409, ex.getMessage(), null));
+    }
+
+    @ExceptionHandler(BancoCodigoImutavelException.class)
+    public ResponseEntity<ErroRespostaDTO> handleBancoCodigoImutavel(BancoCodigoImutavelException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErroRespostaDTO(LocalDateTime.now(), 400, ex.getMessage(), null));
+    }
 }
