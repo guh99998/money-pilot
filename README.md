@@ -10,7 +10,7 @@
 
 ## 📌 Status
 
-Projeto em desenvolvimento. Hoje o CRUD completo (controller, service, DTOs, exceptions e testes) está implementado para os recursos **Categoria**, **Parceiro** (pessoa física e jurídica), **Receita** e **Despesa**. As demais entidades do domínio (ContaBancaria, Banco, Endereco, Pagamento, Recebimento) já existem como models e possuem migrations e repositories, mas ainda não têm service/controller expostos.
+Projeto em desenvolvimento. Hoje o CRUD completo (controller, service, DTOs, exceptions e testes) está implementado para os recursos **Categoria**, **Parceiro** (pessoa física e jurídica), **Receita**, **Despesa** e **Banco**. As demais entidades do domínio (ContaBancaria, Endereco, Pagamento, Recebimento) já existem como models e possuem migrations e repositories, mas ainda não têm service/controller expostos.
 
 ## 🚀 Começando
 
@@ -87,18 +87,30 @@ A API sobe em `http://localhost:8080`.
 | PUT    | `/despesas/{id}`  | Atualiza uma despesa existente      |
 | DELETE | `/despesas/{id}`  | Remove uma despesa                  |
 
+### Banco
+
+| Método | Rota              | Descrição                          |
+|--------|-------------------|-------------------------------------|
+| GET    | `/bancos`         | Lista bancos (paginado)             |
+| GET    | `/bancos/{id}`    | Busca um banco por id               |
+| POST   | `/bancos`         | Cria um novo banco                  |
+| PUT    | `/bancos/{id}`    | Atualiza um banco existente         |
+| DELETE | `/bancos/{id}`    | Remove um banco                     |
+
+> O código do banco (`codigoBanco`) é imutável após a criação — hoje é informado manualmente, mas a ideia é que futuramente venha de uma consulta à tabela FEBRABAN, preenchendo código e nome automaticamente.
+
 ## ⚙️ Executando os testes
 
 ```
 ./mvnw test
 ```
 
-A suíte cobre os recursos Categoria, Parceiro, Receita e Despesa em diferentes camadas:
+A suíte cobre os recursos Categoria, Parceiro, Receita, Despesa e Banco em diferentes camadas:
 
-* **Service** (`CategoriaServiceTest`, `ParceiroServiceTest`, `ReceitaServiceTest`, `DespesaServiceTest`) — regras de negócio com o repository mockado (Mockito)
-* **Controller** (`CategoriaControllerTest`, `ParceiroControllerTest`, `ReceitaControllerTest`, `DespesaControllerTest`) — fatia web (`@WebMvcTest` + MockMvc), validando status HTTP e corpo de resposta
-* **DTO** (`CategoriaRequestDTOTest`, `ParceiroRequestDTOTest`, `ReceitaRequestDTOTest`, `DespesaRequestDTOTest`) — validação de Bean Validation (campos obrigatórios, formatos e regras de negócio)
-* **Model** (`ReceitaTest`, `DespesaTest`) — validação de Bean Validation ao nível de entidade, `equals`/`hashCode` e `toString`
+* **Service** (`CategoriaServiceTest`, `ParceiroServiceTest`, `ReceitaServiceTest`, `DespesaServiceTest`, `BancoServiceTest`) — regras de negócio com o repository mockado (Mockito)
+* **Controller** (`CategoriaControllerTest`, `ParceiroControllerTest`, `ReceitaControllerTest`, `DespesaControllerTest`, `BancoControllerTest`) — fatia web (`@WebMvcTest` + MockMvc), validando status HTTP e corpo de resposta
+* **DTO** (`CategoriaRequestDTOTest`, `ParceiroRequestDTOTest`, `ReceitaRequestDTOTest`, `DespesaRequestDTOTest`, `BancoRequestDTOTest`) — validação de Bean Validation (campos obrigatórios, formatos e regras de negócio)
+* **Model** (`ReceitaTest`, `DespesaTest`, `BancoTest`) — validação de Bean Validation ao nível de entidade, `equals`/`hashCode` e `toString`
 * **Exception Handler** (`ApiExceptionHandlerTest`) — mapeamento de exceções para as respostas de erro padronizadas
 
 ## 🛠️ Construído com
