@@ -78,4 +78,10 @@ public class ApiExceptionHandler {
                 .body(new ErroRespostaDTO(LocalDateTime.now(), 409,
                         "Os dados informados violam uma restrição de integridade (ex: documento duplicado)", null));
     }
+
+    @ExceptionHandler(ReceitaNotFoundException.class)
+    public ResponseEntity<ErroRespostaDTO> handleReceitaNotFound(ReceitaNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErroRespostaDTO(LocalDateTime.now(), 404, ex.getMessage(), null));
+    }
 }
