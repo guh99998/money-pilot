@@ -10,7 +10,7 @@
 
 ## 📌 Status
 
-Projeto em desenvolvimento. Hoje o CRUD completo (controller, service, DTOs, exceptions e testes) está implementado para o recurso **Categoria**. As demais entidades do domínio (Parceiro, ContaBancaria, Banco, Endereco, Pagamento, Recebimento, Despesa, Receita) já existem como models e possuem migrations e repositories, mas ainda não têm service/controller expostos.
+Projeto em desenvolvimento. Hoje o CRUD completo (controller, service, DTOs, exceptions e testes) está implementado para os recursos **Categoria**, **Parceiro** (pessoa física e jurídica), **Receita** e **Despesa**. As demais entidades do domínio (ContaBancaria, Banco, Endereco, Pagamento, Recebimento) já existem como models e possuem migrations e repositories, mas ainda não têm service/controller expostos.
 
 ## 🚀 Começando
 
@@ -57,17 +57,48 @@ A API sobe em `http://localhost:8080`.
 | PUT    | `/categorias/{id}`| Atualiza uma categoria existente    |
 | DELETE | `/categorias/{id}`| Remove uma categoria                |
 
+### Parceiro
+
+| Método | Rota              | Descrição                          |
+|--------|-------------------|-------------------------------------|
+| GET    | `/parceiros`      | Lista parceiros (paginado)          |
+| GET    | `/parceiros/{id}` | Busca um parceiro por id            |
+| POST   | `/parceiros`      | Cria um novo parceiro (PF ou PJ)    |
+| PUT    | `/parceiros/{id}` | Atualiza um parceiro existente      |
+| DELETE | `/parceiros/{id}` | Remove um parceiro                  |
+
+### Receita
+
+| Método | Rota              | Descrição                          |
+|--------|-------------------|-------------------------------------|
+| GET    | `/receitas`       | Lista receitas (paginado)           |
+| GET    | `/receitas/{id}`  | Busca uma receita por id            |
+| POST   | `/receitas`       | Cria uma nova receita               |
+| PUT    | `/receitas/{id}`  | Atualiza uma receita existente      |
+| DELETE | `/receitas/{id}`  | Remove uma receita                  |
+
+### Despesa
+
+| Método | Rota              | Descrição                          |
+|--------|-------------------|-------------------------------------|
+| GET    | `/despesas`       | Lista despesas (paginado)           |
+| GET    | `/despesas/{id}`  | Busca uma despesa por id            |
+| POST   | `/despesas`       | Cria uma nova despesa               |
+| PUT    | `/despesas/{id}`  | Atualiza uma despesa existente      |
+| DELETE | `/despesas/{id}`  | Remove uma despesa                  |
+
 ## ⚙️ Executando os testes
 
 ```
 ./mvnw test
 ```
 
-A suíte cobre o recurso Categoria em diferentes camadas:
+A suíte cobre os recursos Categoria, Parceiro, Receita e Despesa em diferentes camadas:
 
-* **Service** (`CategoriaServiceTest`) — regras de negócio com o repository mockado (Mockito)
-* **Controller** (`CategoriaControllerTest`) — fatia web (`@WebMvcTest` + MockMvc), validando status HTTP e corpo de resposta
-* **DTO** (`CategoriaRequestDTOTest`) — validação de Bean Validation (campos obrigatórios, formato de cor hexadecimal)
+* **Service** (`CategoriaServiceTest`, `ParceiroServiceTest`, `ReceitaServiceTest`, `DespesaServiceTest`) — regras de negócio com o repository mockado (Mockito)
+* **Controller** (`CategoriaControllerTest`, `ParceiroControllerTest`, `ReceitaControllerTest`, `DespesaControllerTest`) — fatia web (`@WebMvcTest` + MockMvc), validando status HTTP e corpo de resposta
+* **DTO** (`CategoriaRequestDTOTest`, `ParceiroRequestDTOTest`, `ReceitaRequestDTOTest`, `DespesaRequestDTOTest`) — validação de Bean Validation (campos obrigatórios, formatos e regras de negócio)
+* **Model** (`ReceitaTest`, `DespesaTest`) — validação de Bean Validation ao nível de entidade, `equals`/`hashCode` e `toString`
 * **Exception Handler** (`ApiExceptionHandlerTest`) — mapeamento de exceções para as respostas de erro padronizadas
 
 ## 🛠️ Construído com
